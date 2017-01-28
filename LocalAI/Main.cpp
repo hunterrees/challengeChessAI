@@ -1,6 +1,10 @@
 #include <iostream>
 #include "RandomAI.h"
-#include "AlphaBetaAI.h"
+#include "LevelFiveAI.h"
+#include "LevelFourAI.h"
+#include "LevelThreeAI.h"
+#include "LevelTwoAi.h"
+#include "LevelOneAI.h"
 
 using namespace std;
 

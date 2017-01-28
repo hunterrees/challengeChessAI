@@ -4,7 +4,7 @@
 
 using namespace std;
 
-class AlphaBetaAI {
+class LevelThreeAI {
 public:
 private:
 };
