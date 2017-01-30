@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "AIBASE.h"
+
 using namespace std;
 
 class RandomAI {

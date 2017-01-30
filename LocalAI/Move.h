@@ -4,7 +4,7 @@
 
 using namespace std;
 
-class AIInterface {
+class Move {
 public:
 private:
 };
