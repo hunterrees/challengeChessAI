@@ -1,2 +1,2 @@
-# challengeChessAI
-AIs for Challenge Chess
+# challengeChessMachineLearning
+Machine Learning AI for Challenge Chess
