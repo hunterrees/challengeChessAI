@@ -123,8 +123,10 @@ class Computer(Player):
         if gn_current.move is not None:
             # Apply last_move
             crdn = str(gn_current.move)
+            # print "crdn: ", crdn[0:2], crdn[2:4]
             move = (119 - sunfish.parse(crdn[0:2]), 119 - sunfish.parse(crdn[2:4]))
             self._pos = self._pos.move(move)
+            # print "self._pos: ", self._pos
 
         # for depth in xrange(1, self._maxd+1):
         alpha = float('-inf')
@@ -133,11 +135,13 @@ class Computer(Player):
         depth = self._maxd
         t0 = time.time()
         best_value, best_move = negamax(self._pos, depth, alpha, beta, 1, self._func)
+        # print 'best_move: %s' % (best_move) 
         crdn = sunfish.render(best_move[0]) + sunfish.render(best_move[1])
         print depth, best_value, crdn, time.time() - t0
 
         self._pos = self._pos.move(best_move)
         crdn = sunfish.render(best_move[0]) + sunfish.render(best_move[1])
+        print "crdn: ", crdn
         move = create_move(gn_current.board(), crdn)
         
         gn_new = chess.pgn.GameNode()

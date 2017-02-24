@@ -1,0 +1,18 @@
+[Event "FICS rated standard game"]
+[Site "FICS freechess.org"]
+[FICSGamesDBGameNo "40877367"]
+[White "presov"]
+[Black "JPCrafty"]
+[WhiteElo "1767"]
+[BlackElo "2454"]
+[BlackIsComp "Yes"]
+[TimeControl "900+0"]
+[Date "2000.03.30"]
+[Time "22:49:00"]
+[WhiteClock "0:15:00.000"]
+[BlackClock "0:15:00.000"]
+[ECO "A45"]
+[PlyCount "14"]
+[Result "0-1"]
+
+1. d4 Nf6 2. Nc3 d5 3. f3 e6 4. e4 Bb4 5. Bd3 dxe4 6. fxe4 Nxe4 7. Nf3 Nxc3 {White resigns} 0-1
