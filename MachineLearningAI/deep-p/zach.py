@@ -16,9 +16,8 @@ import sunfish
 import pickle
 import random
 import traceback
-import pdb
+from pprint import pprint
 
-gameState = {}
 
 def get_model_from_pickle(fn):
     f = open(fn)
@@ -36,8 +35,11 @@ def get_model_from_pickle(fn):
 strip_whitespace = re.compile(r"\s+")
 translate_pieces = string.maketrans(".pnbrqkPNBRQK", "\x00" + "\x01\x02\x03\x04\x05\x06" + "\x08\x09\x0a\x0b\x0c\x0d")
 
+model = get_model_from_pickle('model.pickle')
+
+
 def sf2array(pos, flip):
-# Create a numpy array from a sunfish representation
+    # Create a numpy array from a sunfish representation
     pos = strip_whitespace.sub('', pos.board) # should be 64 characters now
     pos = pos.translate(translate_pieces)
     m = numpy.fromstring(pos, dtype=numpy.int8)
@@ -76,15 +78,10 @@ def negamax(pos, depth, alpha, beta, color, func):
         if depth == 1 or score == CHECKMATE_SCORE:
             value = score
         else:
-            # print 'ok will recurse', sunfish.render(move[0]) + sunfish.render(move[1])
+            #print 'ok will recurse', sunfish.render(move[0]) + sunfish.render(move[1])
             pos_child = pos.move(move)
             neg_value, _ = negamax(pos_child, depth-1, -beta, -alpha, -color, func)
             value = -neg_value
-
-        # value += random.gauss(0, 0.001)
-
-        # crdn = sunfish.render(move[0]) + sunfish.render(move[1])
-        # print '\t' * (3 - depth), crdn, score, value
 
         if value > best_value:
             best_value = value
@@ -98,60 +95,38 @@ def negamax(pos, depth, alpha, beta, color, func):
 
     return best_value, best_move
 
-class machine_learning_ai():
-    def __init__(self, func, maxd=3):
-        self._func = func
-        self._pos = sunfish.Position(sunfish.initial, 0, (True,True), (True,True), 0, 0)
-        self._maxd = maxd
-        # self.gn_current = chess.pgn.Game()
-
-    def get_move(self, crdn):
-        move = (119 - sunfish.parse(crdn[0:2]), 119 - sunfish.parse(crdn[2:4]))
-        self._pos = self._pos.move(move)
-        alpha = float('-inf')
-        beta = float('inf')
-        depth = self._maxd
-        best_value, best_move = negamax(self._pos, depth, alpha, beta, 1, self._func)
-        new_move = sunfish.render(best_move[0]) + sunfish.render(best_move[1])
-        print "new_move: ", new_move
-        self._pos = self._pos.move(best_move)
-        print "pos: ", self._pos
-
-        return new_move
-
-
-
-
-
-def play():
-    func = get_model_from_pickle('model.pickle')
-    bot = machine_learning_ai(func)
-    gn_current = chess.pgn.Game()
-
-    while True:
-        pdb.set_trace()
-        crdn = raw_input("Please enter a move: ")
-        bb = gn_current.board()
-        move = chess.Move.from_uci(crdn)
-        if move in bb.legal_moves:
-            gn_new = chess.pgn.GameNode()
-            gn_new.parent = gn_current
-            gn_new.move = move
-            new_move = bot.get_move(crdn)
-            print "The made the following move: ", new_move
-            gn_new_2 = chess.pgn.GameNode()
-            gn_new_2.parent = gn_current
-            gn_new_2.move = new_move
+def getMove(moveList):
+    learnedModel = model
+    currentBoardPosition = sunfish.Position(sunfish.initial, 0, (True,True), (True,True), 0, 0)
+    #apply all moves in movelist to the currentBoardPosition
+    player1 = True
+    for move in moveList:
+        if player1:
+            formatedMove = (sunfish.parse(move[0:2]), sunfish.parse(move[2:4]))
         else:
-            print "Invalid Move!"
+            formatedMove = (119 - sunfish.parse(move[0:2]), 119 - sunfish.parse(move[2:4]))
+        print 'formatedMove', formatedMove
+        player1 = not(player1)
+        currentBoardPosition = currentBoardPosition.move(formatedMove)
+
+    # for depth in xrange(1, self._maxd+1):
+    alpha = float('-inf')
+    beta = float('inf')
+
+    depth = 2
+    t0 = time.time()
+
+    best_value, best_move = negamax(currentBoardPosition, depth, alpha, beta, 1, learnedModel)
+    moveStandardFormat = sunfish.render(best_move[0]) + sunfish.render(best_move[1])
+    return moveStandardFormat
 
 
-# while True:
-#     side, times = game(func)
-#     f = open('stats.txt', 'a')
-#     f.write('%s %f %f\n' % (side, times['A'], times['B']))
-#     f.close()
+def run():
+    moveList = ["d2d4", "a7a6", 'g1f3', 'g8f6']
+
+
+    print getMove(moveList)
 
 
 if __name__ == '__main__':
-    play()
+    run()

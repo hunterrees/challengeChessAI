@@ -17,7 +17,8 @@ import sunfish
 import pickle
 import random
 import traceback
-import pdb as p 
+import socket
+import pdb
 
 
 loaded_games = {}
@@ -155,7 +156,22 @@ def load_games():
 
 
 def play():
-	load_games()
+	# load_games()
+    s = socket.socket()         
+    host = socket.gethostname()
+    port = 12345   
+    s.bind((host, port))             
+    s.listen(5)
+    
+
+
+
+
+
+    print s.recv(1024)
+    s.send("a7a4")
+    # s.close                     
+    
     # func = get_model_from_pickle('model.pickle')
     # bot = machine_learning_ai(func)
 

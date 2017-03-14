@@ -16,6 +16,7 @@ import sunfish
 import pickle
 import random
 import traceback
+import pdb
 
 
 def get_model_from_pickle(fn):
@@ -123,8 +124,11 @@ class Computer(Player):
         if gn_current.move is not None:
             # Apply last_move
             crdn = str(gn_current.move)
+            print "Here is the move: ", crdn 
             # print "crdn: ", crdn[0:2], crdn[2:4]
-            move = (119 - sunfish.parse(crdn[0:2]), 119 - sunfish.parse(crdn[2:4]))
+            # move = (119 - sunfish.parse(crdn[0:2]), 119 - sunfish.parse(crdn[2:4]))
+            # self._pos = self._pos.move(move)
+            move = (sunfish.parse(crdn[0:2]), sunfish.parse(crdn[2:4]))
             self._pos = self._pos.move(move)
             # print "self._pos: ", self._pos
 
@@ -164,6 +168,7 @@ class Human(Player):
         def get_move(move_str):
             try:
                 move = chess.Move.from_uci(move_str)
+                print "Move: %s" % (move)
             except:
                 print 'cant parse'
                 return False
@@ -225,10 +230,10 @@ def game(func):
     maxn = 10 ** (2.0 + random.random() * 1.0) # max nodes for sunfish
 
     print 'maxd %f maxn %f' % (maxd, maxn)
-
-    player_a = Computer(func, maxd=maxd)
+    pdb.set_trace()
+    player_b = Computer(func, maxd=maxd)
     #player_b = Sunfish(maxn=maxn)
-    player_b = Human()
+    player_a = Human()
 
     times = {'A': 0.0, 'B': 0.0}
     

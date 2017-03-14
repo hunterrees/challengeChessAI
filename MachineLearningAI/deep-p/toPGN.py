@@ -1,11 +1,12 @@
 import MySQLdb
 import pdb as p
 
-
-db = MySQLdb.connect("localhost","root","password","challengeChess")
+p.set_trace()
+# db = MySQLdb.connect("localhost","root","password","challengeChess")
+db = MySQLdb.connect("mydbinstance.c4qmkaf8x5fu.us-west-2.rds.amazonaws.com","root","byucs428","challengeChess")
 cursor = db.cursor()
 
-sqlQuery = "SELECT id FROM game"
+sqlQuery = "SELECT id FROM Game"
 
 cursor.execute(sqlQuery)
 results = cursor.fetchall()
