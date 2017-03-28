@@ -1,7 +1,7 @@
 import MySQLdb
-import pdb as p
+import pdb
 
-p.set_trace()
+pdb.set_trace()
 # db = MySQLdb.connect("localhost","root","password","challengeChess")
 db = MySQLdb.connect("mydbinstance.c4qmkaf8x5fu.us-west-2.rds.amazonaws.com","root","byucs428","challengeChess")
 cursor = db.cursor()

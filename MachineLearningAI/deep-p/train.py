@@ -51,6 +51,7 @@ def get_data(series=['x', 'xr']):
 
     data = [stack(d) for d in data]
     pdb.set_trace()
+    print len(data[0])
     test_size = int(10000.0 / len(data[0]))
     
     print 'Splitting', len(data[0]), 'entries into train/test set'
