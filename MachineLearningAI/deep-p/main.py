@@ -19,6 +19,7 @@ import traceback
 import MySQLdb
 import socket
 import pdb
+import random
 
 gameStates = {}
 
@@ -221,6 +222,14 @@ class game():
         self.setMove(move)
         return move
 
+    def getRandomMove(self):
+        bb = self._gn_current.board()
+        moves = []
+        for move in bb.legal_moves:
+            moves.append(move)
+        return random.choice(moves)
+
+
     def checkMove(self, move_str):
         bb = self._gn_current.board()
         move = chess.Move.from_uci(move_str)
@@ -293,7 +302,7 @@ def load_games():
 
 def play():
     func = get_model_from_pickle('model.pickle')
-    inp = raw_input("Enter the game_id you wish to join. Enter 0 if you'd like to start a new game.")
+    inp = raw_input("Enter the game_id you wish to join. Enter 0 if you'd like to start a new game. Enter 3 to have the bot play against a random bot")
     if inp == "0":
         playAgainstBot()
     else:
@@ -357,8 +366,6 @@ def play():
                     print s
 
 
-
-
 def playAgainstBot():
     func = get_model_from_pickle('model.pickle')
     while True:
@@ -393,6 +400,37 @@ def playAgainstBot():
                 gm.clientMoved(clientMove)
                 s = str(gm._gn_current.board())
                 print s
+
+def botVbot():
+    inp = raw_input("Which player do you want the machine learning AI to be?")
+    if inp == "1":
+        bot = machine_learning_ai(func, False, True)
+        gn_current = chess.pgn.Game()
+        gm = game(bot, gn_current, 1)
+        randomMove = gm.getRandomMove()
+        gm.clientMoved(randomMove)
+        s = str(gm._gn_current.board())
+        print s
+        machineMove = gm.playMachine()
+        print "Machine made the following move: ", machineMove
+        s = str(gm._gn_current.board())
+        print s
+    elif inp == "2":
+        bot = machine_learning_ai(func, True, False)
+        gn_current = chess.pgn.Game()
+        gm = game(bot, gn_current, 2)
+        while True:
+            machineMove = gm.playMachine()
+            print "Machine made the following move: ", machineMove
+            s = str(gm._gn_current.board())
+            print s
+            randomMove = gm.getRandomMove()
+            gm.clientMoved(randomMove)
+            s = str(gm._gn_current.board())
+            print s
+
+
+
 
 if __name__ == '__main__':
     play()
